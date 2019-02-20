@@ -1,1 +1,2 @@
-# webservice_v2
+# webservice
+Django Restful web service to obtain info about the best restaurants
