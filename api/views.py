@@ -1,10 +1,8 @@
 from django.http import JsonResponse
-from .scraper import Hello
-
-b = Hello()
-print(b)
+from api.scraper import scrap_page
 
 def get_francesinhas(request):
+	'''
 	data = [
 	{'name': 'Café Santiago',
 	 'position': 1,
@@ -27,6 +25,10 @@ def get_francesinhas(request):
 	]
 
 	return JsonResponse(data, safe=False)
+	'''
+	list = scrap_page()
+	print(list)
+	return JsonResponse(list, safe=False)
 
 if __name__ == '__main__':
 	get_francesinhas()
