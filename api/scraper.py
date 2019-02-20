@@ -12,5 +12,6 @@ def scrap_page():
 		for j in i:
 			print(j)
 	return j
+
 if __name__ == '__main__':
 	scrap_page()
