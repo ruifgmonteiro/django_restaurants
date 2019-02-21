@@ -12,3 +12,5 @@ class Restaurant(models.Model):
 	website = models.CharField(max_length=30)
 
 
+
+

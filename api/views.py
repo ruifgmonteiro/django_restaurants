@@ -26,9 +26,8 @@ def get_francesinhas(request):
 
 	return JsonResponse(data, safe=False)
 	'''
-	list = scrap_page()
-	print(list)
-	return JsonResponse(list, safe=False)
+	data = scrap_page()
+	return JsonResponse(data, safe=False)
 
 if __name__ == '__main__':
 	get_francesinhas()
