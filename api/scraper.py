@@ -34,7 +34,7 @@ def scrap_page():
 
             # Find all p's.
             address = restaurant_soup.find('div', class_='address').p
-
+            # Test
 
             sep = '<br'
             rest = str(address).split(sep, 1)[0]
