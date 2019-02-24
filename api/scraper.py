@@ -1,10 +1,12 @@
 from api.handle_requests import simple_get
 from bs4 import BeautifulSoup
+from collections import defaultdict
 
 # Scraping implementation. Should return a list of dictionaries.
 def scrap_page():
     # Scraping base url.
     base_url = 'http://francesinhas.com'
+    #print(base_url)
     raw_html = simple_get(base_url)
     soup = BeautifulSoup(raw_html, 'html.parser')
 
@@ -13,7 +15,6 @@ def scrap_page():
     restaurants = top_places.find_all('a')
 
     # Initialize dict, list of dicts (will be used as response) and rank.
-    d = {}
     d_list = []
     rank = 0
 
@@ -22,8 +23,8 @@ def scrap_page():
         rank = rank + 1
         # Get restaurant name and rank.
         for restaurant_name in restaurant:
-            d['name'] = restaurant_name
-            d['rank'] = rank
+            restaurant_dict = {'name': restaurant_name, 'rank': rank, 'stars': None, 'address': None, 'country': None,
+                               'directions': None, 'phone_no': None, 'email': None, 'website': None}
 
             # Scraping each of top restaurants specific web page.
             restaurant_url = base_url + restaurant.get('href')
@@ -32,20 +33,34 @@ def scrap_page():
             # Generate bs object.
             restaurant_soup = BeautifulSoup(restaurant_html, 'html.parser')
 
-            # Find all p's.
-            address = restaurant_soup.find('div', class_='address').p
-            # Test
+            # Get country info.
+            country = str(restaurant_soup.find('div', class_='address').p.get_text().strip()).split('\n')[2].strip()
+            restaurant_dict['country'] = country
 
-            sep = '<br'
-            rest = str(address).split(sep, 1)[0]
-            print(rest)
-            new_sep = '<p>'
-            new_rest = rest.split(new_sep, 1)[1]
-            final = new_rest.strip()
+            # Get address info.
+            address = str(restaurant_soup.find('div', class_='address').p.get_text().strip()).split('\n')[0].strip()
+            restaurant_dict['address'] = address
 
-            d['address'] = final
+            # Get contacts (phone_no).
+            contacts_container = restaurant_soup.find('div', class_='contacts')
+            for item in contacts_container.find_all('i', {"class": "fa fa-phone"}):
+                phone_no = item.find_next_sibling("span").get_text()
+                restaurant_dict['phone_no'] = phone_no
 
-            d_list.append(d.copy())
+            # Get directions.
+            for item in contacts_container.find_all('a', href=True):
+                #print(item)
+                if "maps.google" in str(item):
+                    direction = item['href']
+                    restaurant_dict['directions'] = direction
+                elif "mailto" in str(item):
+                    email = item.text
+                    restaurant_dict['email'] = email
+                else:
+                    website = item['href']
+                    restaurant_dict['website'] = website
+
+            d_list.append(restaurant_dict.copy())
 
     return d_list
 
