@@ -1,12 +1,10 @@
 from api.handle_requests import simple_get
 from bs4 import BeautifulSoup
-from collections import defaultdict
 
 # Scraping implementation. Should return a list of dictionaries.
 def scrap_page():
     # Scraping base url.
     base_url = 'http://francesinhas.com'
-    #print(base_url)
     raw_html = simple_get(base_url)
     soup = BeautifulSoup(raw_html, 'html.parser')
 
@@ -40,6 +38,14 @@ def scrap_page():
             # Get address info.
             address = str(restaurant_soup.find('div', class_='address').p.get_text().strip()).split('\n')[0].strip()
             restaurant_dict['address'] = address
+
+            # Get star rating.
+            star_rating = restaurant_soup.find('div', class_='star-rating').div
+            content = star_rating['style']
+            number = content.split(':')[1]
+            only_number = number.split('%')[0]
+            stars = round(((float(only_number) * 5)/100),2)
+            restaurant_dict['stars'] = stars
 
             # Get contacts (phone_no).
             contacts_container = restaurant_soup.find('div', class_='contacts')
