@@ -19,6 +19,7 @@ def scrap_page():
     # Loop over the detected top restaurants.
     for restaurant in restaurants:
         rank = rank + 1
+
         # Get restaurant name and rank.
         for restaurant_name in restaurant:
             restaurant_dict = {'name': restaurant_name, 'rank': rank, 'stars': None, 'address': None, 'country': None,
