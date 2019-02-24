@@ -16,7 +16,7 @@ def scrap_page():
     d_list = []
     rank = 0
 
-    # Loop over the detected top restaurants.
+    # Loop over the identified top restaurants.
     for restaurant in restaurants:
         rank = rank + 1
 
@@ -48,7 +48,7 @@ def scrap_page():
             stars = round(((float(only_number) * 5)/100),2)
             restaurant_dict['stars'] = stars
 
-            # Get contacts (phone_no).
+            # Get phone_no.
             contacts_container = restaurant_soup.find('div', class_='contacts')
             for item in contacts_container.find_all('i', {"class": "fa fa-phone"}):
                 phone_no = item.find_next_sibling("span").get_text()
@@ -56,7 +56,6 @@ def scrap_page():
 
             # Get directions.
             for item in contacts_container.find_all('a', href=True):
-                #print(item)
                 if "maps.google" in str(item):
                     direction = item['href']
                     restaurant_dict['directions'] = direction

@@ -26,8 +26,7 @@ SECRET_KEY = '2g3uq+e&bmzhy@m136br8-)@vuy%n-3o7oaso%oo9h%!fb$%@('
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '0.0.0.0',
-    '127.0.0.1'
+    '0.0.0.0'
 ]
 # Application definition
 
@@ -74,12 +73,7 @@ WSGI_APPLICATION = 'webservice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
